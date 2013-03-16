@@ -5,7 +5,8 @@ TEMPLATE_DEBUG = DEBUG
 
 import os
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
-SQLITE_3_BASE = os.path.join(PROJECT_PATH, 'list_book.sqlite3')
+SETTINGS_PATH = os.path.dirname(os.path.realpath(__file__))
+SQLITE_3_BASE = os.path.join(SETTINGS_PATH, 'list_book.sqlite3')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -110,7 +111,11 @@ ROOT_URLCONF = 'listOfBooks.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'listOfBooks.wsgi.application'
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_PATH,"/templates"),)
+TEMPLATE_DIRS = (
+    PROJECT_PATH +"/books/templates",
+#    "/home/ola/Projects/listOfBooks/listOfBooks/templates/main.html",
+
+    )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -123,6 +128,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'listOfBooks',
     'books',
 )
 
