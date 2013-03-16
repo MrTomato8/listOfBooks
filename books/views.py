@@ -11,7 +11,7 @@ def main(request):
 @render_to('detail.html')
 def detail(request,id):
     try:
-        id=int(id)
+        id = int(id)
         item = Books.objects.filter(pk=id)[0]
     except ValueError:
         raise Http404()
