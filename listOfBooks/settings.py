@@ -110,7 +110,9 @@ ROOT_URLCONF = 'listOfBooks.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'listOfBooks.wsgi.application'
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_PATH,"/templates"),)
+TEMPLATE_DIRS = (
+    PROJECT_PATH +"/books/templates",
+    )
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -123,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'listOfBooks',
     'books',
 )
 
