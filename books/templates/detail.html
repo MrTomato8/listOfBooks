@@ -7,17 +7,16 @@
 {#    <link rel="stylesheet" title="screen style" type="text/css" href="{{ STATIC_URL }}css/style.css"/>#}
     <script type="text/javascript" charset="utf-8">
         function bindPostCommentHandler() {
-            $('#comment_form form input.submit-preview').remove();
-            $('#comment_form form').submit(function() {
+            $('#comment_form').submit(function() {
                 var comment_text = $('#id_comment').val();
                 $.ajax({
                     type: "POST",
-                    data: $('#comment_form form').serialize(),
+                    data: $('#comment_form').serialize(),
                     url: "{% comment_form_target %}",
                     cache: false,
                     dataType: "html",
                     success: function(html, textStatus) {
-                        $('#comment_form form').fadeTo(500, 0, function(){
+                        $('#comment_form').fadeTo(500, 0, function(){
                             $(this).remove();
                         });
 
@@ -31,7 +30,7 @@
                         bindPostCommentHandler();
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        $('#comment_form form').replaceWith('Your comment was unable to be posted at this time.  We apologize for the inconvenience.');
+                        $('#comment_form').replaceWith('Your comment was unable to be posted at this time.  We apologize for the inconvenience.');
                     }
                 });
                 return false;
@@ -78,7 +77,6 @@
             <tr>
                 <td colspan="2">
                     <input type="submit" name="submit" value="Post">
-                    <input type="submit" name="preview" value="Preview">
                 </td>
             </tr>
 
