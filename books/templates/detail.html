@@ -2,46 +2,31 @@
 {% block title %}Detail page{% endblock %}
 {% block extrahead %}
     {% load comments %}
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-    <script src="http://malsup.github.com/jquery.form.js"></script>
-{#    <link rel="stylesheet" title="screen style" type="text/css" href="{{ STATIC_URL }}css/style.css"/>#}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.form.js"></script>
     <script type="text/javascript" charset="utf-8">
-        function bindPostCommentHandler() {
-            $('#comment_form').submit(function() {
-                var comment_text = $('#id_comment').val();
-                $.ajax({
-                    type: "POST",
-                    data: $('#comment_form').serialize(),
-                    url: "{% comment_form_target %}",
-                    cache: false,
-                    dataType: "html",
-                    success: function(html, textStatus) {
-                        $('#comment_form').fadeTo(500, 0, function(){
-                            $(this).remove();
-                        });
-
-                        var today = new Date();
-                        var dd = today.getDate();
-                        var mm = today.getMonth()+1;
-                        var yyyy = today.getFullYear();
-                        if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} var today = mm+'/'+dd+'/'+yyyy;
-                        var comment = "<div class='comment'><h4>User " + "\"{{ user.username }}\"" + " Rating <small>" + today + "</small></h4>" + comment_text + "</div><hr />";
-                        $(comment).hide().prependTo("#comments_loc").fadeIn(1000);
-                        bindPostCommentHandler();
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        $('#comment_form').replaceWith('Your comment was unable to be posted at this time.  We apologize for the inconvenience.');
-                    }
-                });
+        /*<![CDATA[*/
+        $(function () {
+            var form = $("#list-comments");
+            form.submit(function (e) {
+                $("#sendbutton").attr('disabled', true);
+                $("#result").html(form.serializeArray());
+                $("#sendwrapper").prepend('<span>Sending message, please wait... </span>');
+                $("#comment-form").load(
+                        form.attr('action') + ' #comment-form',
+                        form.serializeArray(),
+                        function (responseText, responseStatus) {
+                            $("#sendbutton").attr('disabled', false)
+                        }
+                );
+                e.preventDefault();
                 return false;
             });
-        }
-
-        $(document).ready(function() {
-            bindPostCommentHandler();
         });
+        /*]]>*/
     </script>
 {% endblock extrahead %}
+
 {% block content %}
 
     <form id="item">
@@ -49,40 +34,14 @@
 
         <p><b>Title:</b> {{ item.name }}</p>
 
-        <p> <b>Author:</b> {{ item.author }}</p>
+        <p><b>Author:</b> {{ item.author }}</p>
 
         <p><b> Description:</b> {{ item.description }}</p>
     </form>
-    <form id="list of comments">
+    <form id="list-comments" action="{% comment_form_target %}" method="post">>
         <hr noshade style="size: '2'; width: 50%;  float: left;">
         <br>
-        <div id="comment_form">
-        {% get_comment_count for item as comment_count %}
-        <p>{{ comment_count }} comments have been posted.</p>
-        {% get_comment_list for item as comment_list %}
-        {% for comment in comment_list %}
-            <p><b><i>Posted by: {{ comment.user_name }} on {{ comment.submit_date }} </i></b></p>
-            <p>Comment: {{ comment.comment }}</p>
-        {% endfor %}
-
-{#    </form>#}
-{#    <form id="add_comments_form" action="{% comment_form_target %}" method="post">#}
-        <hr noshade style="size: '2'; width: 50%;  float: left;">
-        <br>
-        <p>Do you want to leave a comment for this book? Welcome!</p>
-        {% get_comment_form for item as form %}
-        <table width="50%">
-            {% csrf_token %}
-            {{ form }}
-            <tr>
-                <td colspan="2">
-                    <input type="submit" name="submit" value="Post">
-                </td>
-            </tr>
-
-        </table>
-      <input type="hidden" name="next" value="{% url detail id %}" />
-        </div>
+        {% csrf_token %}
+        {% include "add.html" %}
     </form>
-
 {% endblock content %}

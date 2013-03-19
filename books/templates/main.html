@@ -2,9 +2,9 @@
 {% block title %}Main page{% endblock %}
 {% block content %}
     <form>
-    <h3>List of our books:</h3>
-    {% for item in items%}
-        <p> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></p>
-    {% endfor %}
-   </form>
+        <h3>List of our books:</h3>
+        {% for item in items %}
+            <p> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></p>
+        {% endfor %}
+    </form>
 {% endblock content %}
