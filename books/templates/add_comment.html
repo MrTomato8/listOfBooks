@@ -1,4 +1,4 @@
-<div id="comment-form">     {% load comments %}
+<div id="comment-form">   {% csrf_token %}   {% load comments %}
     {% get_comment_count for item as comment_count %}
     <p>{{ comment_count }} comments have been posted.</p>
 
@@ -16,7 +16,9 @@
 
     {% get_comment_form for item as form %}
     <table width="50%">
-        {{ form.non_field_errors }}
+         {% if form.non_field_errors %}
+                {{ form.non_field_errors }}
+            {% endif %}
         {{ form }}
         <tr>
             <td colspan="2">

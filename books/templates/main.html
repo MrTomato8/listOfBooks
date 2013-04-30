@@ -7,4 +7,5 @@
             <p> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></p>
         {% endfor %}
     </form>
+    {% include "add_book.html" %}
 {% endblock content %}
