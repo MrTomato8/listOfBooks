@@ -1,0 +1,20 @@
+ <div id="add_book">
+
+    <hr noshade style="size: '2'; width: 50%;  float: left;">
+    <br>
+
+    <p>Do you want to add a new book? Welcome!</p>
+<form action="" method="post"> {% csrf_token %}
+    <table width="50%">
+        {{ form.non_field_errors }}
+        {{ form.as_p }}
+        <tr>
+            <td colspan="2">
+                <p id="sendwrapper"><input type="submit" name="submit" value="Add"></p>
+                <input type="hidden" name="next" value="{% url main %}"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</div>
+
