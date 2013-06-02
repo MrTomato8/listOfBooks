@@ -1,25 +1,28 @@
+# -*- coding: utf-8 -*-
 from django.contrib.comments import CommentForm
 from django.http import Http404
-from django.shortcuts import render
-from books.forms import BooksForm
-from books.models import Books
+from django.shortcuts import render, render_to_response
+from forms import BooksForm
+from models import Books
 from django.template import RequestContext
 
 
 def main(request):
-    items = Books.objects.all()
-    form = BooksForm()
-    if request.is_ajax():
-        form = BooksForm(request)
-        if form.is_valid():
+    if request.method == "POST":
+        form = BooksForm(request.POST)
+        if form.is_valid() and request.is_ajax():
+            try:
+                form.save()
+            except:
+                print "Ошибка сохранения!"
             items = Books.objects.all()
-            form.save()
-            return render(request, 'add_book.html', {'items': items,
-                                                     'form': form},
-                          context_instance=RequestContext(request))
+            return render_to_response('add_book.html', {'items': items, 'form': form},
+                          RequestContext(request))
     else:
-        return render(request, 'main.html', {'items': items, 'form': form},
-                      context_instance=RequestContext(request))
+        items = Books.objects.all()
+        form = BooksForm()
+        return render_to_response('main.html', {'items': items, 'form': form},
+                      RequestContext(request))
 
 
 def detail(request, id):
@@ -31,8 +34,8 @@ def detail(request, id):
     if request.method == "POST":
         form = CommentForm(request)
         if form.is_valid() and request.is_ajax():
-            # import time
-            # time.sleep(5)
+            import time
+            time.sleep(5)
             # response is just the form
             return render(request, 'add_comment.html', {'item': item, 'id': id}, context_instance=RequestContext(request))
     else:

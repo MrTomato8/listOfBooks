@@ -1,11 +1,42 @@
 {% extends "base.html" %}
 {% block title %}Main page{% endblock %}
+{% block extrahead %}
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.form.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        /*<![CDATA[*/
+        $(function () {
+            var form = $("#list-comments");
+            form.submit(function (e) {
+                $("#sendbutton").attr('disabled', true);
+                $("#form-add").attr('disabled', true);
+                $("#result").html(form.serializeArray());
+                $("#sendwrapper").prepend('<span>Sending, please wait... </span>');
+                $("#booklist").load(
+                        form.attr('action') + ' #form-add',
+                        form.serializeArray(),
+                        function (responseText, responseStatus) {
+                            $("#sendbutton").attr('disabled', false);
+                            $("#form-add").attr('disabled', false);
+
+                        }
+                );
+                e.preventDefault();
+                return false;
+            });
+        });
+        /*]]>*/
+    </script>
+{% endblock extrahead %}
 {% block content %}
-    <form>
+    <form id="booklist">
         <h3>List of our books:</h3>
         {% for item in items %}
             <p> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></p>
         {% endfor %}
+    <div id="result">
+    </div>
     </form>
     {% include "add_book.html" %}
 {% endblock content %}

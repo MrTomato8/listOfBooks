@@ -10,13 +10,16 @@
             var form = $("#list-comments");
             form.submit(function (e) {
                 $("#sendbutton").attr('disabled', true);
+                $("#comment-form").attr('disabled', true);
                 $("#result").html(form.serializeArray());
                 $("#sendwrapper").prepend('<span>Sending message, please wait... </span>');
                 $("#comment-form").load(
                         form.attr('action') + ' #comment-form',
                         form.serializeArray(),
                         function (responseText, responseStatus) {
-                            $("#sendbutton").attr('disabled', false)
+                            $("#sendbutton").attr('disabled', false);
+                            $("#comment-form").attr('disabled', false);
+
                         }
                 );
                 e.preventDefault();
