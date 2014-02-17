@@ -1,4 +1,5 @@
-<div id="comment-form">   {% csrf_token %}   {% load comments %}
+{% load comments i18n %}
+<div id="comment-form">
     {% get_comment_count for item as comment_count %}
     <p>{{ comment_count }} comments have been posted.</p>
 
@@ -15,16 +16,51 @@
     <p>Do you want to leave a comment for this book? Welcome!</p>
 
     {% get_comment_form for item as form %}
-    <table width="50%">
-         {% if form.non_field_errors %}
-                {{ form.non_field_errors }}
-            {% endif %}
-        {{ form }}
-        <tr>
-            <td colspan="2">
-                <p id="sendwrapper"><input type="submit" id="sendbutton" name="submit" value="Post"></p>
-            </td>
-        </tr>
-    </table>
-    <input type="hidden" name="next" value="{% url detail id %}"/>
+
+    {% for field in form %}
+        {% if form.errors %}
+            <!-- Error messaging -->
+            <div id="errors">
+                <div class="inner">
+                    <p>There were some errors in the information you entered. Please correct the following:</p>
+                    {{ form.non_field_errors }}
+                    <ul>
+                        {% for field in form %}
+                            {% if field.errors %}
+                                <li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <!-- /Error messaging -->
+        {% endif %}
+
+        {% if field.is_hidden %}
+            {{ field }}
+        {% elif field.name == "comment" %}
+            {{ field.errors }}
+            <div>
+                <textarea name="comment" id="id_comment" class="content"
+                          placeholder='{% trans "Добавить комментарий" %}...'></textarea>
+            </div>
+            <p id="sendwrapper"><input type="submit" id="sendbutton" name="submit"
+                                       class="btn btn-primary sendbutton" value="{% trans "Комментировать" %}"></p>
+        {% elif field.name == "name" %}
+        <input type="text" name="name" value="" id='id_name' placeholder=" {% trans 'Ваше имя' %}..." />
+        {% elif field.name == "email" %}
+        <input type="hidden" name="email" value="123@ya.ru" id="id_email"/>
+        {% elif field.name == "url" %}
+            <input type="hidden" name="url" value="http://123ya.ru" id="id_url" />
+            {% if field.errors %}{{ field.errors }}{% endif %}
+            {% else %}
+            <p {% if field.errors %} class="error"{% endif %} {% if field.name == "honeypot" %}
+                                     style="display:none;"{% endif %}>
+               {{ field }}
+            </p>
+        {% endif %}
+    {% endfor %}
+
+    <input type="hidden" name="next" value="{% url 'detail' id %}"/>
+
+
 </div>

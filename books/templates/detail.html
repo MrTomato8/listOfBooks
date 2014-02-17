@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Detail page{% endblock %}
 {% block extrahead %}
-    {% load comments %}
+    {% load comments i18n %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.form.js"></script>
     <script type="text/javascript" charset="utf-8">
@@ -33,7 +33,7 @@
 {% block content %}
 
     <form id="item">
-    <p><a href="{% url main %}">&laquo; Back to the main page</a></p>
+    <p><a href="{% url 'main' %}">&laquo; Back to the main page</a></p>
         <h3>More about "{{ item.name }}":</h3>
 
         <p><b>Name:</b> {{ item.name }}</p>
@@ -42,7 +42,7 @@
 
         <p><b> Description:</b> {{ item.description }}</p>
     </form>
-    <form id="list-comments" action="{% comment_form_target %}" method="post">>
+    <form id="list-comments" action="{% comment_form_target %}" method="post">
         <hr noshade style="size: '2'; width: 50%;  float: left;">
         <br>
         {% csrf_token %}

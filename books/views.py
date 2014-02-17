@@ -8,21 +8,17 @@ from django.template import RequestContext
 
 
 def main(request):
+    items = Books.objects.all()
     if request.method == "POST":
-        form = BooksForm(request.POST)
+        form = BooksForm(request.POST or None)
         if form.is_valid() and request.is_ajax():
-            try:
-                form.save()
-            except:
-                print "Ошибка сохранения!"
-            items = Books.objects.all()
-            return render_to_response('add_book.html', {'items': items, 'form': form},
-                          RequestContext(request))
+            form.save()
+            return render(request, 'add_book.html', {'items': items, 'form': form},
+                          context_instance=RequestContext(request))
     else:
-        items = Books.objects.all()
         form = BooksForm()
-        return render_to_response('main.html', {'items': items, 'form': form},
-                      RequestContext(request))
+    return render(request, 'main.html', {'items': items, 'form': form},
+                      context_instance=RequestContext(request))
 
 
 def detail(request, id):
@@ -32,7 +28,7 @@ def detail(request, id):
     except ValueError:
         raise Http404()
     if request.method == "POST":
-        form = CommentForm(request)
+        form = CommentForm(request.POST or None)
         if form.is_valid() and request.is_ajax():
             import time
             time.sleep(5)

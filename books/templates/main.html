@@ -7,12 +7,12 @@
     <script type="text/javascript" charset="utf-8">
         /*<![CDATA[*/
         $(function () {
-            var form = $("#list-comments");
+            var form = $("#booklist");
             form.submit(function (e) {
                 $("#sendbutton").attr('disabled', true);
                 $("#form-add").attr('disabled', true);
                 $("#result").html(form.serializeArray());
-                $("#sendwrapper").prepend('<span>Sending, please wait... </span>');
+                $("#sendwrapper_book").prepend('<span>Sending, please wait... </span>');
                 $("#booklist").load(
                         form.attr('action') + ' #form-add',
                         form.serializeArray(),
@@ -30,13 +30,10 @@
     </script>
 {% endblock extrahead %}
 {% block content %}
-    <form id="booklist">
-        <h3>List of our books:</h3>
-        {% for item in items %}
-            <p> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></p>
-        {% endfor %}
-    <div id="result">
-    </div>
-    </form>
+      <h3>List of books:</h3>
+  <form id="booklist" action="{% url 'main' %}" method="post">
+
     {% include "add_book.html" %}
+
+   </form>
 {% endblock content %}
