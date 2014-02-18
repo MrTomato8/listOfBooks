@@ -1,11 +1,13 @@
-######################
-This application created for old test task.
+
+This is test web project represents a web application created use Python and Django.
 It's display a list of books(each book have fields: "name", "description", "author"), like library and also you can add book into the list or commenting existing books.
 The main page display all list, the name of book is link to detail books view. Detail view include comments list and comment form with sending comment without refresh page.
 Welcome!
-######################
-Приложение для отображения списка книг, у каждой книги есть поля "название", "описание", "автор".
+
+TODO: add twitter bootstrap, registration ( + social network too), load title thumbnails.
+
+Это тестовый проект, который представляет собой веб-приложение, написаное на Питоне и Джанго. Приложение используется для отображения списка книг(подобно библиотеке), у каждой книги есть поля "название", "описание", "автор".
 На главной странице отображается список книг, название - ссылка на детальный просмотр. Можно добавлять новые книги в список без перезагрузки страницы.
 На странице детального просмотра список комментариев к книге и форма комментирования с отправкой без перезагрузки страницы.
-######################
+
 
