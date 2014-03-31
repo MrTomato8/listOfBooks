@@ -1,7 +1,7 @@
 {% load comments i18n %}
 <div id="comment-form">
     {% get_comment_count for item as comment_count %}
-    <p>{{ comment_count }} comments have been posted.</p>
+    <legend>{{ comment_count }} comments have been posted.</legend>
 
     {% get_comment_list for item as comment_list %}
     {% for comment in comment_list %}
@@ -10,10 +10,8 @@
     {% endfor %}
     <div id="result">
     </div>
-    <hr noshade style="size: '2'; width: 50%;  float: left;">
-    <br>
 
-    <p>Do you want to leave a comment for this book? Welcome!</p>
+    <legend>Do you want to leave a comment for this book? Welcome!</legend>
 
     {% get_comment_form for item as form %}
 

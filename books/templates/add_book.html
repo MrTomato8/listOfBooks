@@ -1,16 +1,13 @@
 <form id="form-add" action="{% url 'main' %}" method="post"> {% csrf_token %}
 
         {% for item in items %}
-            <p> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></p>
+            <h4> {{ forloop.counter }}. <a href="books/{{ forloop.counter }}">"{{ item.name }}"</a></h4>
         {% endfor %}
     <div id="result">
     </div>
 <div id="add_book">
 
-    <hr noshade style="size: '2'; width: 50%;  float: left;">
-    <br>
-
-    <p>Do you want to add a new book? Welcome!</p>
+    <legend>Do you want to add a new book? Welcome!</legend>
 
     <table width="50%">
         {% if form.non_field_errors %}

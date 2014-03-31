@@ -38,3 +38,7 @@ def detail(request, id):
         # response is the entire page
         return render(request, 'detail.html', {'item': item, 'id': id}, context_instance=RequestContext(request))
 
+
+def search(request):
+    return
+
